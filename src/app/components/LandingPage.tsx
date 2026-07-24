@@ -10,7 +10,7 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
   return (
     <div className="min-h-screen flex flex-col">
       {/* Nav */}
-      <header className="bg-[#2B3A67] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg">
+      <header className="bg-[#2B3A67] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#F2A93B] rounded-full flex items-center justify-center flex-shrink-0">
             <GraduationCap className="w-6 h-6 text-[#2B3A67]" />
