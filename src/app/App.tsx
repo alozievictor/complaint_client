@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { LandingPage } from './components/LandingPage';
 import { CategorySelect } from './components/CategorySelect';
 import { ComplaintForm } from './components/ComplaintForm';
@@ -10,6 +11,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { ComplaintDetail } from './components/ComplaintDetail';
 import { SuperAdminDashboard } from './components/SuperAdminDashboard';
 import { ManageAdmins } from './components/ManageAdmins';
+import { Toaster } from './components/ui/sonner';
 import { api, authStore } from './lib/api';
 import type { Admin, Category, Complaint, ComplaintFormPayload } from './types';
 
@@ -35,7 +37,11 @@ export default function App() {
   const [newComplaint, setNewComplaint] = useState<Complaint | null>(null);
   const [trackedComplaint, setTrackedComplaint] = useState<Complaint | null>(null);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
-  const [appError, setAppError] = useState('');
+
+  const showRequestError = (error: unknown, fallback: string) => {
+    const message = error instanceof Error ? error.message : fallback;
+    toast.error(message || fallback);
+  };
 
   const refreshComplaints = async () => {
     const result = await api.listComplaints();
@@ -51,10 +57,15 @@ export default function App() {
   };
 
   const handleSubmitComplaint = async (data: ComplaintFormPayload) => {
-    setAppError('');
-    const result = await api.submitComplaint(data);
-    setNewComplaint(result.complaint);
-    setView('confirmation');
+    try {
+      const result = await api.submitComplaint(data);
+      setNewComplaint(result.complaint);
+      setView('confirmation');
+      toast.success('Complaint submitted successfully');
+    } catch (error) {
+      showRequestError(error, 'Unable to submit complaint');
+      throw error;
+    }
   };
 
   const handleTrackComplaint = async (code: string): Promise<boolean> => {
@@ -62,8 +73,10 @@ export default function App() {
       const result = await api.trackComplaint(code.trim().toUpperCase());
       setTrackedComplaint(result.complaint);
       setView('complaint-status');
+      toast.success('Complaint found');
       return true;
-    } catch {
+    } catch (error) {
+      showRequestError(error, 'Complaint not found');
       return false;
     }
   };
@@ -79,8 +92,10 @@ export default function App() {
       }
       setComplaints(loadedComplaints);
       setView(result.admin.role === 'super' ? 'super-dashboard' : 'admin-dashboard');
+      toast.success(`Welcome back, ${result.admin.name}`);
       return true;
-    } catch {
+    } catch (error) {
+      showRequestError(error, 'Invalid username or password');
       return false;
     }
   };
@@ -91,21 +106,28 @@ export default function App() {
     setComplaints([]);
     setAdmins([]);
     setView('landing');
+    toast.success('Signed out');
   };
 
   const handleUpdateComplaint = async (updated: Complaint) => {
     if (!selectedComplaint) return;
 
-    const result = await api.updateComplaint(selectedComplaint.id, {
-      status: updated.status,
-      adminResponse: updated.adminResponse,
-      internalNotes: updated.internalNotes,
-      category: updated.category,
-    });
+    try {
+      const result = await api.updateComplaint(selectedComplaint.id, {
+        status: updated.status,
+        adminResponse: updated.adminResponse,
+        internalNotes: updated.internalNotes,
+        category: updated.category,
+      });
 
-    setComplaints(prev => prev.map(c => c.id === result.complaint.id ? result.complaint : c));
-    setSelectedComplaint(result.complaint);
-    if (trackedComplaint?.id === result.complaint.id) setTrackedComplaint(result.complaint);
+      setComplaints(prev => prev.map(c => c.id === result.complaint.id ? result.complaint : c));
+      setSelectedComplaint(result.complaint);
+      if (trackedComplaint?.id === result.complaint.id) setTrackedComplaint(result.complaint);
+      toast.success('Complaint updated');
+    } catch (error) {
+      showRequestError(error, 'Unable to update complaint');
+      throw error;
+    }
   };
 
   const handleUpdateAdmins = async (updatedAdmins: Admin[]) => {
@@ -116,8 +138,14 @@ export default function App() {
 
     if (!changed) return;
 
-    await api.updateAdmin(changed.id, { isActive: changed.isActive });
-    await refreshAdmins();
+    try {
+      await api.updateAdmin(changed.id, { isActive: changed.isActive });
+      await refreshAdmins();
+      toast.success(changed.isActive ? 'Admin reactivated' : 'Admin deactivated');
+    } catch (error) {
+      showRequestError(error, 'Unable to update admin');
+      throw error;
+    }
   };
 
   const openAdminDashboard = async () => {
@@ -130,14 +158,6 @@ export default function App() {
     if (currentAdmin?.role === 'super') setView('super-dashboard');
     else setView('admin-dashboard');
   };
-
-  const renderError = () => (
-    appError ? (
-      <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-[#D0564A] px-4 py-3 text-sm font-medium text-white shadow-lg">
-        {appError}
-      </div>
-    ) : null
-  );
 
   const renderView = () => {
     switch (view) {
@@ -219,7 +239,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#F7F8FA]">
       {renderView()}
-      {renderError()}
+      <Toaster richColors position="top-right" />
     </div>
   );
 }
