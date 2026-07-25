@@ -15,7 +15,7 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
     e.preventDefault();
     setError('');
     if (!code.trim()) {
-      setError('Please enter your reference code');
+      setError('Please enter your private tracking code');
       return;
     }
     setLoading(true);
@@ -23,11 +23,11 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
       const found = await onTrack(code.trim());
       setLoading(false);
       if (!found) {
-        setError('No complaint found with that reference code. Please check and try again.');
+        setError('No complaint found with that tracking code. Please check and try again.');
       }
     } catch {
       setLoading(false);
-      setError('No complaint found with that reference code. Please check and try again.');
+      setError('No complaint found with that tracking code. Please check and try again.');
     }
   };
 
@@ -62,19 +62,19 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
             </div>
             <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Track Your Complaint</h2>
             <p className="text-[#6B7280] text-sm leading-relaxed">
-              Enter the reference code you received when you submitted your complaint. It looks like <strong>LC-2026-0483</strong>.
+              Enter the private tracking code you received when you submitted your complaint. It looks like <strong>550E8400-E29B-41D4-A716-446655440000</strong>.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#1E2233] mb-2">Reference Code</label>
+              <label className="block text-sm font-medium text-[#1E2233] mb-2">Private Tracking Code</label>
               <input
                 type="text"
                 value={code}
                 onChange={handleChange}
-                placeholder="e.g. LC-2026-0483"
-                maxLength={15}
+                placeholder="e.g. 550E8400-E29B-41D4-A716-446655440000"
+                maxLength={36}
                 className={`w-full px-5 py-4 bg-white border-2 rounded-2xl text-[#1E2233] text-center text-xl font-mono tracking-widest placeholder:text-gray-300 placeholder:font-normal placeholder:tracking-normal focus:outline-none focus:ring-2 focus:ring-[#2B3A67]/20 transition-all ${
                   error ? 'border-[#D0564A] bg-red-50/50' : 'border-gray-200 focus:border-[#2B3A67]'
                 }`}
@@ -109,22 +109,6 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
             </button>
           </form>
 
-          <div className="mt-8 bg-white border border-gray-100 rounded-xl p-5">
-            <p className="text-sm font-semibold text-[#1E2233] mb-2">Demo Reference Codes</p>
-            <p className="text-xs text-[#6B7280] mb-3">Try these pre-loaded complaints to explore the system:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {['LC-2026-0001', 'LC-2026-0002', 'LC-2026-0003', 'LC-2026-0004'].map(demoCode => (
-                <button
-                  key={demoCode}
-                  type="button"
-                  onClick={() => setCode(demoCode)}
-                  className="text-left px-3 py-2 bg-[#F7F8FA] hover:bg-[#2B3A67]/8 border border-gray-200 hover:border-[#2B3A67]/20 rounded-lg text-xs font-mono text-[#2B3A67] transition-colors"
-                >
-                  {demoCode}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>

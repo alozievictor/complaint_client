@@ -5,6 +5,7 @@ export type AdminRole = 'academic' | 'finance' | 'hostel' | 'ict' | 'super';
 export interface Complaint {
   id: string;
   referenceCode: string;
+  trackingToken?: string;
   category: Category;
   subject: string;
   description: string;
@@ -34,5 +35,6 @@ export type ComplaintFormPayload = {
   isAnonymous: boolean;
   realName: string;
   realEmail: string;
+  notificationEmail: string;
   attachment?: File | null;
 };

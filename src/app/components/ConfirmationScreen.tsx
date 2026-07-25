@@ -21,12 +21,12 @@ export function ConfirmationScreen({ complaint, onDone, onTrack }: Props) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(complaint.referenceCode);
+      await navigator.clipboard.writeText(complaint.trackingToken ?? '');
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
       const el = document.createElement('textarea');
-      el.value = complaint.referenceCode;
+      el.value = complaint.trackingToken ?? '';
       document.body.appendChild(el);
       el.select();
       document.execCommand('copy');
@@ -61,13 +61,13 @@ export function ConfirmationScreen({ complaint, onDone, onTrack }: Props) {
 
           <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Complaint Submitted!</h2>
           <p className="text-[#6B7280] mb-8 text-sm leading-relaxed">
-            Your complaint has been received and will be reviewed by the relevant department. Save your reference code — you'll need it to track your complaint.
+            Your complaint has been received and will be reviewed by the relevant department. Save your private tracking code — you'll need it to track your complaint.
           </p>
 
           {/* Reference code — the most important UI element */}
           <div className="bg-[#2B3A67] rounded-2xl p-7 mb-3 text-white shadow-xl">
-            <p className="text-blue-200 text-xs font-medium uppercase tracking-wider mb-3">Your Reference Code</p>
-            <div className="text-4xl font-bold tracking-wider mb-5 font-mono">{complaint.referenceCode}</div>
+            <p className="text-blue-200 text-xs font-medium uppercase tracking-wider mb-3">Your Private Tracking Code</p>
+            <div className="text-lg font-bold tracking-wider mb-5 font-mono break-all">{complaint.trackingToken}</div>
             <button
               onClick={handleCopy}
               className={`flex items-center gap-2 mx-auto px-6 py-2.5 rounded-xl font-medium text-sm transition-all ${
@@ -108,7 +108,7 @@ export function ConfirmationScreen({ complaint, onDone, onTrack }: Props) {
             <div className="flex items-start gap-2.5 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 mb-6 text-left">
               <Mail className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
               <p className="text-sm text-blue-700">
-                A confirmation with your reference code has been sent to your email address.
+                A confirmation with your private tracking code has been sent to your email address.
               </p>
             </div>
           )}

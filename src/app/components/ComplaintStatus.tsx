@@ -76,8 +76,8 @@ export function ComplaintStatus({ complaint, onBack }: Props) {
         {/* Reference and status badge */}
         <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
           <div>
-            <p className="text-xs text-[#6B7280] mb-0.5">Reference Code</p>
-            <p className="text-xl font-bold font-mono text-[#1E2233]">{complaint.referenceCode}</p>
+            <p className="text-xs text-[#6B7280] mb-0.5">Tracking Code</p>
+            <p className="text-sm font-bold font-mono text-[#1E2233] break-all">{complaint.trackingToken}</p>
           </div>
           <div className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border ${config.bg} ${config.color} ${config.border}`}>
             <StatusIcon className="w-4 h-4" />
@@ -161,7 +161,7 @@ export function ComplaintStatus({ complaint, onBack }: Props) {
           <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 mb-6 text-center">
             <MessageSquare className="w-6 h-6 text-gray-300 mx-auto mb-2" />
             <p className="text-[#6B7280] text-sm">No response from admin yet.</p>
-            <p className="text-xs text-gray-400 mt-0.5">Check back later or track updates via your reference code.</p>
+            <p className="text-xs text-gray-400 mt-0.5">Check back later using your private tracking code.</p>
           </div>
         )}
 

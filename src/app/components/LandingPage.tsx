@@ -73,7 +73,7 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
             {
               step: '02',
               title: 'Track',
-              desc: 'Receive a unique reference code like LC-2026-0483. Use it anytime to check the current status of your complaint.',
+              desc: 'Receive a private tracking code that you can use anytime to check your complaint status.',
               icon: Search,
             },
             {

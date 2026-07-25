@@ -44,10 +44,9 @@ export const api = {
     formData.set('subject', payload.subject);
     formData.set('description', payload.description);
     formData.set('isAnonymous', String(payload.isAnonymous));
+    formData.set('notificationEmail', payload.notificationEmail);
 
-    if (payload.isAnonymous) {
-      formData.set('notificationEmail', payload.realEmail);
-    } else {
+    if (!payload.isAnonymous) {
       formData.set('realName', payload.realName);
       formData.set('realEmail', payload.realEmail);
     }
@@ -60,8 +59,8 @@ export const api = {
     });
   },
 
-  trackComplaint(referenceCode: string) {
-    return request<{ complaint: Complaint }>(`/complaints/track/${encodeURIComponent(referenceCode)}`);
+  trackComplaint(trackingToken: string) {
+    return request<{ complaint: Complaint }>(`/complaints/track/${encodeURIComponent(trackingToken)}`);
   },
 
   async login(username: string, password: string) {

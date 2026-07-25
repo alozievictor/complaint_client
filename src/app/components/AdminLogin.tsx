@@ -1,18 +1,10 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowLeft, Eye, EyeOff, Shield, AlertCircle, GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, Shield, AlertCircle, GraduationCap } from 'lucide-react';
 
 interface Props {
   onLogin: (username: string, password: string) => Promise<boolean>;
   onBack: () => void;
 }
-
-const DEMO_CREDENTIALS = [
-  { role: 'Academic Admin', username: 'academic', password: 'password123', color: 'bg-blue-50 text-blue-700' },
-  { role: 'Hostel Admin', username: 'hostel', password: 'password123', color: 'bg-green-50 text-green-700' },
-  { role: 'Finance Admin', username: 'finance', password: 'password123', color: 'bg-yellow-50 text-yellow-700' },
-  { role: 'ICT Admin', username: 'ict', password: 'password123', color: 'bg-purple-50 text-purple-700' },
-  { role: 'Super Admin', username: 'superadmin', password: 'admin12345', color: 'bg-red-50 text-red-700' },
-];
 
 export function AdminLogin({ onLogin, onBack }: Props) {
   const [username, setUsername] = useState('');
@@ -20,7 +12,6 @@ export function AdminLogin({ onLogin, onBack }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -42,12 +33,6 @@ export function AdminLogin({ onLogin, onBack }: Props) {
     }
   };
 
-  const fillCredentials = (cred: typeof DEMO_CREDENTIALS[0]) => {
-    setUsername(cred.username);
-    setPassword(cred.password);
-    setError('');
-    setShowDemo(false);
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F8FA]">
@@ -135,36 +120,6 @@ export function AdminLogin({ onLogin, onBack }: Props) {
                 ) : 'Sign In'}
               </button>
             </form>
-
-            {/* Demo credentials */}
-            <div className="mt-5 border-t border-gray-100 pt-4">
-              <button
-                type="button"
-                onClick={() => setShowDemo(v => !v)}
-                className="w-full flex items-center justify-between text-sm text-[#6B7280] hover:text-[#2B3A67] transition-colors py-1"
-              >
-                <span className="font-medium">Demo Credentials</span>
-                {showDemo ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-              {showDemo && (
-                <div className="mt-3 space-y-2">
-                  {DEMO_CREDENTIALS.map(cred => (
-                    <button
-                      key={cred.username}
-                      type="button"
-                      onClick={() => fillCredentials(cred)}
-                      className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 border border-gray-100 text-left group transition-colors"
-                    >
-                      <div>
-                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${cred.color}`}>{cred.role}</span>
-                        <div className="text-xs text-[#6B7280] mt-0.5 font-mono">{cred.username} / {cred.password}</div>
-                      </div>
-                      <span className="text-xs text-[#4A5C99] opacity-0 group-hover:opacity-100 transition-opacity">Use →</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>

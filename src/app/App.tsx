@@ -39,7 +39,9 @@ export default function App() {
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
 
   const showRequestError = (error: unknown, fallback: string) => {
-    const message = error instanceof Error ? error.message : fallback;
+    const message = error instanceof Error && error.message !== 'Failed to fetch'
+      ? error.message
+      : 'Unable to reach the server. Please try again.';
     toast.error(message || fallback);
   };
 
