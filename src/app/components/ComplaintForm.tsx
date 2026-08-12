@@ -1,6 +1,7 @@
 import { useState, useRef, type FormEvent } from 'react';
 import { ArrowLeft, Paperclip, X, AlertCircle, User, Mail, EyeOff, GraduationCap } from 'lucide-react';
 import type { Category, ComplaintFormPayload } from '../types';
+import { ApiError } from '../lib/api';
 
 const CATEGORY_LABELS: Record<Category, string> = {
   academic: 'Academic / Lecturer',
@@ -60,8 +61,11 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
         notificationEmail: isAnonymous ? notifEmail.trim() : email.trim(),
         attachment,
       });
-    } catch {
-      setErrors({ submit: 'We could not submit your complaint. Please try again.' });
+    } catch (error) {
+      const message = error instanceof ApiError
+        ? error.message
+        : 'We could not submit your complaint. Please try again.';
+      setErrors({ submit: message });
     } finally {
       setSubmitting(false);
     }

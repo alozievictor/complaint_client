@@ -1,12 +1,16 @@
-import type { Admin, Complaint, ComplaintFormPayload } from '../types';
+import type { Admin, AuditLog, Complaint, ComplaintFormPayload, CreateAdminPayload, ComplaintAnalytics, ComplaintListMeta, ComplaintListQuery } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 const TOKEN_KEY = 'lcocms_admin_token';
 
 type ApiResponse<T> = Promise<T>;
 
-class ApiError extends Error {
-  constructor(message: string, public status: number) {
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public fieldErrors: Record<string, string[] | undefined> = {},
+  ) {
     super(message);
   }
 }
@@ -22,7 +26,11 @@ async function request<T>(path: string, options: RequestInit = {}): ApiResponse<
   const body = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new ApiError(body.message ?? 'Request failed', response.status);
+    const fieldErrors = body.errors as Record<string, string[] | undefined> | undefined;
+    const firstFieldMessage = fieldErrors
+      ? Object.values(fieldErrors).flat().find((message): message is string => Boolean(message))
+      : undefined;
+    throw new ApiError(firstFieldMessage ?? body.message ?? 'Request failed', response.status, fieldErrors ?? {});
   }
 
   return body as T;
@@ -34,6 +42,9 @@ export const authStore = {
   },
   clear() {
     localStorage.removeItem(TOKEN_KEY);
+  },
+  hasToken() {
+    return Boolean(localStorage.getItem(TOKEN_KEY));
   },
 };
 
@@ -63,6 +74,13 @@ export const api = {
     return request<{ complaint: Complaint }>(`/complaints/track/${encodeURIComponent(trackingToken)}`);
   },
 
+  addFollowUpMessage(trackingToken: string, message: string) {
+    return request<{ complaint: Complaint }>(`/complaints/track/${encodeURIComponent(trackingToken)}/messages`, {
+      method: 'POST',
+      body: JSON.stringify({ message }),
+    });
+  },
+
   async login(username: string, password: string) {
     const result = await request<{ token: string; admin: Admin }>('/auth/login', {
       method: 'POST',
@@ -72,8 +90,25 @@ export const api = {
     return result;
   },
 
-  listComplaints() {
-    return request<{ complaints: Complaint[] }>('/complaints');
+  me() {
+    return request<{ admin: Admin }>('/auth/me');
+  },
+
+  listComplaints(query: ComplaintListQuery = {}) {
+    const params = new URLSearchParams();
+    Object.entries(query).forEach(([key, value]) => {
+      if (value !== undefined && value !== '') params.set(key, String(value));
+    });
+    const suffix = params.toString() ? `?${params.toString()}` : '';
+    return request<{ complaints: Complaint[] } & ComplaintListMeta>(`/complaints${suffix}`);
+  },
+
+  getAnalytics() {
+    return request<ComplaintAnalytics>('/analytics');
+  },
+
+  listAuditLogs(page = 1, limit = 25) {
+    return request<{ logs: AuditLog[]; pagination: { page: number; limit: number; total: number; totalPages: number } }>(`/audit-logs?page=${page}&limit=${limit}`);
   },
 
   updateComplaint(id: string, payload: Partial<Pick<Complaint, 'status' | 'adminResponse' | 'internalNotes' | 'category'>>) {
@@ -83,8 +118,19 @@ export const api = {
     });
   },
 
+  getAttachmentUrl(complaintId: string, attachmentId: string) {
+    return request<{ url: string }>(`/complaints/${encodeURIComponent(complaintId)}/attachments/${encodeURIComponent(attachmentId)}/url`);
+  },
+
   listAdmins() {
     return request<{ admins: Admin[] }>('/admins');
+  },
+
+  createAdmin(payload: CreateAdminPayload) {
+    return request<{ admin: Admin }>('/admins', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
   },
 
   updateAdmin(id: string, payload: Partial<Pick<Admin, 'isActive' | 'name' | 'email' | 'role'>>) {

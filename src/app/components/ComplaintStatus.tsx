@@ -1,4 +1,5 @@
-import { ArrowLeft, GraduationCap, Clock, Eye, CheckCircle2, MessageSquare, Calendar } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, GraduationCap, Clock, Eye, CheckCircle2, MessageSquare, Calendar, Send, Lock } from 'lucide-react';
 import type { Complaint } from '../types';
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -34,20 +35,27 @@ const STATUS_CONFIG = {
     icon: CheckCircle2,
     step: 2,
   },
+  closed: {
+    label: 'Closed', color: 'text-[#475569]', bg: 'bg-[#475569]/12', border: 'border-[#475569]/25', icon: Lock, step: 3,
+  },
 };
 
 const TIMELINE_STEPS = [
   { key: 'pending', label: 'Submitted', sub: 'Complaint received by the system', icon: Clock },
   { key: 'under_review', label: 'Under Review', sub: 'Being reviewed by the department', icon: Eye },
-  { key: 'resolved', label: 'Resolved', sub: 'Admin has responded and closed', icon: CheckCircle2 },
+  { key: 'resolved', label: 'Resolved', sub: 'Admin has provided a solution', icon: CheckCircle2 },
+  { key: 'closed', label: 'Closed', sub: 'Complaint is closed and cannot receive follow-ups', icon: Lock },
 ];
 
 interface Props {
   complaint: Complaint;
   onBack: () => void;
+  onFollowUp: (message: string) => Promise<void>;
 }
 
-export function ComplaintStatus({ complaint, onBack }: Props) {
+export function ComplaintStatus({ complaint, onBack, onFollowUp }: Props) {
+  const [followUp, setFollowUp] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const config = STATUS_CONFIG[complaint.status];
   const StatusIcon = config.icon;
   const currentStep = config.step;
@@ -92,10 +100,10 @@ export function ComplaintStatus({ complaint, onBack }: Props) {
               <span className="text-xs text-[#4A5C99] bg-[#4A5C99]/10 px-2.5 py-0.5 rounded-full font-medium">
                 {CATEGORY_LABELS[complaint.category]}
               </span>
-              <h3 className="font-semibold text-[#1E2233] mt-2 text-lg leading-snug">{complaint.subject}</h3>
+              <h3 className="font-semibold text-[#1E2233] mt-2 text-lg leading-snug break-words">{complaint.subject}</h3>
             </div>
           </div>
-          <p className="text-[#6B7280] text-sm leading-relaxed mb-4">{complaint.description}</p>
+          <p className="text-[#6B7280] text-sm leading-relaxed mb-4 break-words">{complaint.description}</p>
           <div className="flex items-center gap-1.5 text-xs text-[#6B7280] border-t border-gray-50 pt-3">
             <Calendar className="w-3.5 h-3.5" />
             Submitted on {formatDate(complaint.submittedAt)}
@@ -148,22 +156,64 @@ export function ComplaintStatus({ complaint, onBack }: Props) {
           </div>
         </div>
 
-        {/* Admin response */}
-        {complaint.adminResponse ? (
+        {/* Conversation */}
+        {complaint.messages?.length > 0 && (
+          <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-6 shadow-sm">
+            <h3 className="font-semibold text-[#1E2233] mb-4">Conversation</h3>
+            <div className="space-y-3">
+              {complaint.messages.map((message, index) => (
+                <div key={`${message.createdAt}-${index}`} className={`rounded-xl p-4 ${message.sender === 'admin' ? 'bg-[#2E9E6B]/6 border border-[#2E9E6B]/20' : 'bg-[#2B3A67]/6 border border-[#2B3A67]/15'}`}>
+                  <div className="flex items-center justify-between gap-3 mb-1">
+                    <span className="text-xs font-semibold text-[#1E2233]">{message.sender === 'admin' ? 'Admin response' : 'Your follow-up'}</span>
+                    <span className="text-[11px] text-gray-400">{formatDate(message.createdAt)}</span>
+                  </div>
+                  <p className="text-[#1E2233] text-sm leading-relaxed break-words">{message.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Admin response (legacy complaints without messages) */}
+        {!complaint.messages?.length && complaint.adminResponse ? (
           <div className="bg-[#2E9E6B]/6 border border-[#2E9E6B]/20 rounded-2xl p-5 mb-6">
             <div className="flex items-center gap-2 mb-3">
               <MessageSquare className="w-4 h-4 text-[#2E9E6B]" />
               <span className="font-semibold text-[#1E2233] text-sm">Admin Response</span>
             </div>
-            <p className="text-[#1E2233] text-sm leading-relaxed">{complaint.adminResponse}</p>
+            <p className="text-[#1E2233] text-sm leading-relaxed break-words">{complaint.adminResponse}</p>
           </div>
-        ) : (
+        ) : null}
+        {!complaint.messages?.length && !complaint.adminResponse && (
           <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5 mb-6 text-center">
             <MessageSquare className="w-6 h-6 text-gray-300 mx-auto mb-2" />
             <p className="text-[#6B7280] text-sm">No response from admin yet.</p>
             <p className="text-xs text-gray-400 mt-0.5">Check back later using your private tracking code.</p>
           </div>
         )}
+
+        {/* Follow-up */}
+        <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-6 shadow-sm">
+          <h3 className="font-semibold text-[#1E2233] mb-1">Need more help?</h3>
+          <p className="text-xs text-[#6B7280] mb-3">Send a follow-up under this complaint. If it was resolved, it will be reopened for review.</p>
+          <textarea
+            value={followUp}
+            onChange={event => setFollowUp(event.target.value)}
+            placeholder="Explain what still needs attention..."
+            rows={4}
+            className="w-full px-4 py-3 bg-[#F7F8FA] border border-gray-200 rounded-xl text-sm text-[#1E2233] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2B3A67]/20 resize-none"
+          />
+          {complaint.status !== 'closed' ? <button
+            disabled={submitting || followUp.trim().length < 3}
+            onClick={async () => {
+              setSubmitting(true);
+              try { await onFollowUp(followUp.trim()); setFollowUp(''); } finally { setSubmitting(false); }
+            }}
+            className="mt-3 w-full flex items-center justify-center gap-2 bg-[#2B3A67] text-white py-3 rounded-xl font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#1a2547] transition-colors"
+          >
+            <Send className="w-4 h-4" /> {submitting ? 'Sending...' : 'Send Follow-up'}
+          </button> : <div className="mt-3 text-center text-sm text-[#6B7280] bg-gray-50 rounded-xl py-3">This complaint is closed and cannot receive follow-up messages.</div>}
+        </div>
 
         <button
           onClick={onBack}
