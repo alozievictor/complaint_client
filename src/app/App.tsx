@@ -27,6 +27,21 @@ type View =
   | 'manage-admins'
   | 'audit-logs';
 
+const PAGE_TITLES: Record<View, string> = {
+  landing: 'SimpliRide | Ride Support',
+  'category-select': 'Report a Ride Issue | SimpliRide',
+  'complaint-form': 'Tell Us What Happened | SimpliRide',
+  confirmation: 'Report Submitted | SimpliRide',
+  track: 'Track a Report | SimpliRide',
+  'complaint-status': 'Report Status | SimpliRide',
+  'admin-login': 'Support Portal | SimpliRide',
+  'admin-dashboard': 'Support Operations | SimpliRide',
+  'complaint-detail': 'Support Request | SimpliRide',
+  'super-dashboard': 'Operations Overview | SimpliRide',
+  'manage-admins': 'Support Team | SimpliRide',
+  'audit-logs': 'Support Activity | SimpliRide',
+};
+
 export default function App() {
   const [view, setView] = useState<View>('landing');
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -43,6 +58,10 @@ export default function App() {
   const [trackedComplaint, setTrackedComplaint] = useState<Complaint | null>(null);
   const [selectedComplaint, setSelectedComplaint] = useState<Complaint | null>(null);
   const [restoringSession, setRestoringSession] = useState(true);
+
+  useEffect(() => {
+    document.title = PAGE_TITLES[view];
+  }, [view]);
 
   const showRequestError = (error: unknown, fallback: string) => {
     const message = error instanceof Error && error.message !== 'Failed to fetch'
@@ -145,9 +164,16 @@ export default function App() {
   };
 
   const handleAdminLogin = async (username: string, password: string): Promise<boolean> => {
+    let result;
     try {
-      const result = await api.login(username, password);
-      setCurrentAdmin(result.admin);
+      result = await api.login(username, password);
+    } catch (error) {
+      showRequestError(error, 'Invalid username or password');
+      return false;
+    }
+
+    setCurrentAdmin(result.admin);
+    try {
       const loadedComplaints = await refreshComplaints();
       if (result.admin.role === 'super') {
         const adminResult = await api.listAdmins();
@@ -159,8 +185,9 @@ export default function App() {
       toast.success(`Welcome back, ${result.admin.name}`);
       return true;
     } catch (error) {
-      showRequestError(error, 'Invalid username or password');
-      return false;
+      setView(result.admin.role === 'super' ? 'super-dashboard' : 'admin-dashboard');
+      showRequestError(error, 'Signed in, but some dashboard data could not be loaded');
+      return true;
     }
   };
 

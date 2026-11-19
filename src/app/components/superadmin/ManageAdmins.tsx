@@ -1,11 +1,10 @@
 import { useState, type ElementType, type FormEvent } from "react";
 import {
   ArrowLeft,
-  GraduationCap,
-  BookOpen,
-  Building2,
+  Car,
   CreditCard,
-  Monitor,
+  Shield,
+  Smartphone,
   LayoutDashboard,
   Power,
   Mail,
@@ -21,43 +20,44 @@ import {
 } from "lucide-react";
 import type { Admin, AdminRole, CreateAdminPayload } from "../../types";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import { SimpliRideMark } from "../SimpliRideMark";
 
 const ROLE_CONFIG: Record<
   AdminRole,
   { label: string; icon: ElementType; color: string; bg: string }
 > = {
-  academic: {
-    label: "Academic Admin",
-    icon: BookOpen,
+  trip: {
+    label: "Ride & Booking Support",
+    icon: Car,
     color: "text-blue-600",
     bg: "bg-blue-50",
   },
-  finance: {
-    label: "Finance Admin",
+  payments: {
+    label: "Payments & Fare Support",
     icon: CreditCard,
     color: "text-yellow-600",
     bg: "bg-yellow-50",
   },
-  hostel: {
-    label: "Hostel Admin",
-    icon: Building2,
+  safety: {
+    label: "Driver & Rider Conduct Support",
+    icon: Shield,
     color: "text-green-600",
     bg: "bg-green-50",
   },
-  ict: {
-    label: "ICT Admin",
-    icon: Monitor,
+  app_account: {
+    label: "App & Technical Support",
+    icon: Smartphone,
     color: "text-purple-600",
     bg: "bg-purple-50",
   },
   general: {
-    label: "General Complaints Admin",
+    label: "General Support",
     icon: MessageSquare,
     color: "text-slate-600",
     bg: "bg-slate-100",
   },
   super: {
-    label: "Super Admin",
+    label: "Operations Lead",
     icon: LayoutDashboard,
     color: "text-red-600",
     bg: "bg-red-50",
@@ -65,10 +65,10 @@ const ROLE_CONFIG: Record<
 };
 
 const ASSIGNABLE_ROLES: CreateAdminPayload["role"][] = [
-  "academic",
-  "finance",
-  "hostel",
-  "ict",
+  "trip",
+  "payments",
+  "safety",
+  "app_account",
   "general",
 ];
 
@@ -97,7 +97,7 @@ export function ManageAdmins({
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<CreateAdminPayload["role"]>("academic");
+  const [role, setRole] = useState<CreateAdminPayload["role"]>("trip");
   const [creating, setCreating] = useState(false);
   const [formError, setFormError] = useState("");
   const [createdCredentials, setCreatedCredentials] = useState<{
@@ -151,7 +151,7 @@ export function ManageAdmins({
       setUsername("");
       setEmail("");
       setPassword("");
-      setRole("academic");
+      setRole("trip");
       setShowCreateModal(false);
     } catch (error) {
       setFormError(
@@ -167,7 +167,7 @@ export function ManageAdmins({
   const copyCredentials = async () => {
     if (!createdCredentials) return;
     await navigator.clipboard.writeText(
-      `Lincoln College OCMS login\nUsername: ${createdCredentials.username}\nTemporary password: ${createdCredentials.password}`,
+      `SimpliRide Complaint Management System login\nUsername: ${createdCredentials.username}\nTemporary password: ${createdCredentials.password}`,
     );
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -179,8 +179,8 @@ export function ManageAdmins({
   return (
     <DashboardLayout
       admin={admin}
-      title="Manage Admins"
-      subtitle="Staff access and category assignments"
+      title="Support Team"
+      subtitle="Support access and category assignments"
       active="admins"
       onNavigate={(key) => {
         if (key === "overview") onBack();
@@ -198,13 +198,11 @@ export function ManageAdmins({
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">
-              Manage Admin Accounts
-            </div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Manage Support Accounts</div>
           </div>
         </div>
       </header>
@@ -237,7 +235,7 @@ export function ManageAdmins({
               }}
               className="flex items-center gap-2 bg-[#2B3A67] text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-[#1a2547] transition-colors"
             >
-              <UserPlus className="w-4 h-4" /> Create Admin
+              <UserPlus className="w-4 h-4" /> Add Support Agent
             </button>
           </div>
         </div>
@@ -270,14 +268,14 @@ export function ManageAdmins({
           <Users className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <span>
             Deactivating an account immediately revokes its portal access.
-            Category admins can only handle complaints assigned to their
+            Support agents can only handle reports assigned to their
             category and cannot manage accounts or change passwords.
           </span>
         </div>
 
         <div className="space-y-3">
           {admins.map((admin) => {
-            const roleConf = ROLE_CONFIG[admin.role];
+            const roleConf = ROLE_CONFIG[admin.role] ?? ROLE_CONFIG.general;
             const RoleIcon = roleConf.icon;
             const isSuperAdmin = admin.role === "super";
             return (
@@ -356,12 +354,12 @@ export function ManageAdmins({
                     id="create-admin-title"
                     className="font-semibold text-[#1E2233] text-lg"
                   >
-                    Create Category Admin
+                    Add Support Agent
                   </h3>
                 </div>
                 <p className="text-xs text-[#6B7280] mt-2">
-                  Create login details and assign the one complaint category
-                  this admin can manage.
+                  Create login details and assign the support category this
+                  agent can manage.
                 </p>
               </div>
               <button
@@ -394,7 +392,7 @@ export function ManageAdmins({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  placeholder="name@college.edu"
+                  placeholder="name@simpliride.ng"
                   className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#2B3A67]"
                 />
               </div>
@@ -413,7 +411,7 @@ export function ManageAdmins({
               </div>
               <div>
                 <label className="text-sm font-medium text-[#1E2233] block mb-1.5">
-                  Complaint category
+                  Support category
                 </label>
                 <select
                   value={role}
@@ -454,7 +452,7 @@ export function ManageAdmins({
             </div>
             <p className="text-xs text-[#6B7280] mt-3">
               The password is shown only now. Copy it and share it securely with
-              the new admin.
+              the new support agent.
             </p>
             {formError && (
               <p className="text-sm text-[#D0564A] mt-3">{formError}</p>
@@ -471,7 +469,7 @@ export function ManageAdmins({
                 disabled={creating}
                 className="px-5 py-2.5 bg-[#2B3A67] text-white rounded-xl text-sm font-semibold hover:bg-[#1a2547] disabled:opacity-60"
               >
-                {creating ? "Creating..." : "Create Admin"}
+                {creating ? "Creating..." : "Create Support Agent"}
               </button>
             </div>
           </form>

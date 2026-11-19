@@ -1,7 +1,7 @@
-export type Category = 'academic' | 'finance' | 'hostel' | 'ict' | 'general';
+export type Category = 'trip' | 'payments' | 'safety' | 'app_account' | 'general';
 export type ComplaintStatus = 'pending' | 'under_review' | 'resolved' | 'closed';
 export type ComplaintMessage = {
-  sender: 'student' | 'admin';
+  sender: 'customer' | 'admin';
   body: string;
   createdAt: string | Date;
 };
@@ -21,7 +21,7 @@ export type ComplaintSla = {
   resolutionOverdue: boolean;
   nearingDeadline: boolean;
 };
-export type AdminRole = 'academic' | 'finance' | 'hostel' | 'ict' | 'general' | 'super';
+export type AdminRole = 'trip' | 'payments' | 'safety' | 'app_account' | 'general' | 'super';
 
 export interface Complaint {
   id: string;
@@ -98,7 +98,7 @@ export type ComplaintAnalytics = {
 
 export type AuditLog = {
   id: string;
-  actorType: 'admin' | 'student' | 'system';
+  actorType: 'admin' | 'customer' | 'system';
   actorName?: string;
   action: string;
   complaintReference?: string;

@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { CheckCircle2, Copy, Check, Search, Home, Mail, GraduationCap } from 'lucide-react';
+import { CheckCircle2, Copy, Check, Search, Home, Mail } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 import type { Complaint } from '../types';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  academic: 'Academic / Lecturer',
-  finance: 'Tuition & Fees',
-  hostel: 'Hostel & Facilities',
-  ict: 'ICT / Portal Issues',
-  general: 'General / Other',
+  trip: 'Ride and Booking Issues',
+  payments: 'Payments and Fare Issues',
+  safety: 'Driver and Rider Conduct',
+  app_account: 'App and Technical Issues',
+  general: 'General Support and Other Issues',
 };
 
 interface Props {
@@ -43,11 +44,11 @@ export function ConfirmationScreen({ complaint, onDone, onTrack }: Props) {
       <header className="bg-[#2B3A67] text-white px-6 py-4 flex items-center gap-3">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Complaint Submitted</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Ride Support</div>
           </div>
         </div>
       </header>
@@ -59,7 +60,7 @@ export function ConfirmationScreen({ complaint, onDone, onTrack }: Props) {
             <CheckCircle2 className="w-10 h-10 text-[#2E9E6B]" />
           </div>
 
-          <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Complaint Submitted!</h2>
+          <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Your report is in.</h2>
           <p className="text-[#6B7280] mb-8 text-sm leading-relaxed">
             Your complaint has been received and will be reviewed by the relevant department. Save your private tracking code — you'll need it to track your complaint.
           </p>

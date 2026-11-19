@@ -4,11 +4,11 @@ import {
   ClipboardList,
   ChevronLeft,
   ChevronRight,
-  GraduationCap,
 } from "lucide-react";
 import type { AuditLog, Admin } from "../../types";
 import { api } from "../../lib/api";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import { SimpliRideMark } from "../SimpliRideMark";
 
 interface Props {
   admin: Admin;
@@ -51,8 +51,8 @@ export function AuditLogs({
   return (
     <DashboardLayout
       admin={admin}
-      title="Audit Logs"
-      subtitle="Super Admin activity history"
+      title="Support Activity"
+      subtitle="Support operations activity history"
       active="audit"
       onNavigate={(key) => {
         if (key === "overview") onBack();
@@ -67,12 +67,12 @@ export function AuditLogs({
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
             <div className="font-semibold text-sm">Audit Logs</div>
             <div className="text-[11px] text-blue-200">
-              Super Admin activity history
+              Operations lead activity history
             </div>
           </div>
         </div>

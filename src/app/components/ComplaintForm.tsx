@@ -1,14 +1,15 @@
 import { useState, useRef, type FormEvent } from 'react';
-import { ArrowLeft, Paperclip, X, AlertCircle, User, Mail, EyeOff, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Paperclip, X, AlertCircle, User, Mail, EyeOff } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 import type { Category, ComplaintFormPayload } from '../types';
 import { ApiError } from '../lib/api';
 
 const CATEGORY_LABELS: Record<Category, string> = {
-  academic: 'Academic / Lecturer',
-  finance: 'Tuition & Fees',
-  hostel: 'Hostel & Facilities',
-  ict: 'ICT / Portal Issues',
-  general: 'General / Other',
+  trip: 'Ride and Booking Issues',
+  payments: 'Payments and Fare Issues',
+  safety: 'Driver and Rider Conduct',
+  app_account: 'App and Technical Issues',
+  general: 'General Support and Other Issues',
 };
 
 interface Props {
@@ -79,11 +80,11 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Submit a Complaint</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Ride Support</div>
           </div>
         </div>
       </header>
@@ -113,7 +114,7 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Tell us about your complaint</h2>
+        <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Tell us what happened</h2>
         <p className="text-[#6B7280] text-sm mb-8">Be as specific as possible — include dates, names, and any steps you've already taken.</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">

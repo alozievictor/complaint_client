@@ -2,10 +2,10 @@ import type { ElementType } from "react";
 import {
   LogOut,
   Users,
-  BookOpen,
-  Building2,
+  Car,
   CreditCard,
-  Monitor,
+  Shield,
+  Smartphone,
   MessageSquare,
   Clock,
   Eye,
@@ -21,11 +21,11 @@ const CATEGORY_LABELS: Record<
   string,
   { label: string; icon: ElementType; short: string }
 > = {
-  academic: { label: "Academic / Lecturer", icon: BookOpen, short: "Academic" },
-  finance: { label: "Tuition & Fees", icon: CreditCard, short: "Finance" },
-  hostel: { label: "Hostel & Facilities", icon: Building2, short: "Hostel" },
-  ict: { label: "ICT / Portal", icon: Monitor, short: "ICT" },
-  general: { label: "General / Other", icon: MessageSquare, short: "General" },
+  trip: { label: "Ride and Booking Issues", icon: Car, short: "Ride & Booking" },
+  payments: { label: "Payments and Fare Issues", icon: CreditCard, short: "Payments & Fare" },
+  safety: { label: "Driver and Rider Conduct", icon: Shield, short: "Driver & Rider" },
+  app_account: { label: "App and Technical Issues", icon: Smartphone, short: "App & Technical" },
+  general: { label: "General Support and Other Issues", icon: MessageSquare, short: "General Support" },
 };
 
 interface Props {
@@ -80,8 +80,8 @@ export function SuperAdminDashboard({
   return (
     <DashboardLayout
       admin={admin}
-      title="System Overview"
-      subtitle="Complaint performance across all departments"
+      title="Operations Overview"
+      subtitle="Ride support performance across all teams"
       active="overview"
       onNavigate={(key) => {
         if (key === "complaints") onViewAll();
@@ -98,9 +98,9 @@ export function SuperAdminDashboard({
               <LayoutDashboard className="w-5 h-5 text-[#2B3A67]" />
             </div>
             <div>
-              <div className="font-bold text-sm">Lincoln College OCMS</div>
+              <div className="font-bold text-sm">SimpliRide Support</div>
               <div className="text-[11px] text-blue-200">
-                Super Admin Overview — {admin.name}
+                Operations Overview — {admin.name}
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@ export function SuperAdminDashboard({
               onClick={onManageAdmins}
               className="flex items-center gap-1.5 text-sm text-blue-200 hover:text-white border border-white/20 px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors"
             >
-              <Users className="w-3.5 h-3.5" /> Manage Admins
+              <Users className="w-3.5 h-3.5" /> Manage Support Team
             </button>
             <button
               onClick={onViewAuditLogs}
@@ -121,7 +121,7 @@ export function SuperAdminDashboard({
               onClick={onViewAll}
               className="flex items-center gap-1.5 text-sm text-blue-200 hover:text-white border border-white/20 px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors"
             >
-              All Complaints
+              All Reports
             </button>
             <button
               onClick={onLogout}
@@ -135,7 +135,7 @@ export function SuperAdminDashboard({
 
       <div className="flex-1 px-6 py-8 max-w-7xl mx-auto w-full">
         {/* <div className="mb-6">
-          <h2 className="text-xl font-bold text-[#1E2233]">System Overview</h2>
+          <h2 className="text-xl font-bold text-[#1E2233]">Operations Overview</h2>
           <p className="text-[#6B7280] text-sm">
             All complaints across all departments — real-time analytics
           </p>
@@ -343,7 +343,8 @@ export function SuperAdminDashboard({
                         : complaint.status === "closed"
                           ? "Closed"
                           : "Resolved";
-                  const CatIcon = CATEGORY_LABELS[complaint.category].icon;
+                  const category = CATEGORY_LABELS[complaint.category] ?? CATEGORY_LABELS.general;
+                  const CatIcon = category.icon;
                   return (
                     <tr
                       key={complaint.id}
@@ -358,7 +359,7 @@ export function SuperAdminDashboard({
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1.5 text-xs text-[#6B7280]">
                           <CatIcon className="w-3 h-3" />
-                          {CATEGORY_LABELS[complaint.category].short}
+                          {category.short}
                         </div>
                       </td>
                       <td className="px-4 py-4 max-w-[240px]">
@@ -395,10 +396,10 @@ export function SuperAdminDashboard({
           </div>
         </div>
 
-        {/* Admin accounts summary */}
+        {/* Support accounts summary */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <div className="font-semibold text-[#1E2233]">Admin Accounts</div>
+            <div className="font-semibold text-[#1E2233]">Support Accounts</div>
             <button
               onClick={onManageAdmins}
               className="text-sm text-[#4A5C99] hover:text-[#2B3A67] flex items-center gap-1 font-medium"

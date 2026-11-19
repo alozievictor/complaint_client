@@ -1,7 +1,7 @@
 import type { Admin, AuditLog, Complaint, ComplaintFormPayload, CreateAdminPayload, ComplaintAnalytics, ComplaintListMeta, ComplaintListQuery } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
-const TOKEN_KEY = 'lcocms_admin_token';
+const TOKEN_KEY = 'simpliride_admin_token';
 
 type ApiResponse<T> = Promise<T>;
 

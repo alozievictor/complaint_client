@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { ArrowLeft, GraduationCap, Clock, Eye, CheckCircle2, MessageSquare, Calendar, Send, Lock } from 'lucide-react';
+import { ArrowLeft, Clock, Eye, CheckCircle2, MessageSquare, Calendar, Send, Lock } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 import type { Complaint } from '../types';
 
 const CATEGORY_LABELS: Record<string, string> = {
-  academic: 'Academic / Lecturer',
-  finance: 'Tuition & Fees',
-  hostel: 'Hostel & Facilities',
-  ict: 'ICT / Portal Issues',
-  general: 'General / Other',
+  trip: 'Ride and Booking Issues',
+  payments: 'Payments and Fare Issues',
+  safety: 'Driver and Rider Conduct',
+  app_account: 'App and Technical Issues',
+  general: 'General Support and Other Issues',
 };
 
 const STATUS_CONFIG = {
@@ -71,11 +72,11 @@ export function ComplaintStatus({ complaint, onBack, onFollowUp }: Props) {
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Complaint Status</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Report Status</div>
           </div>
         </div>
       </header>

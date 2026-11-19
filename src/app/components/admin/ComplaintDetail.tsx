@@ -8,11 +8,10 @@ import {
   CheckCircle2,
   User,
   Mail,
-  GraduationCap,
-  BookOpen,
-  Building2,
+  Car,
   CreditCard,
-  Monitor,
+  Shield,
+  Smartphone,
   MessageSquare,
   Calendar,
   Save,
@@ -24,20 +23,21 @@ import {
 import type { Admin, Complaint, ComplaintStatus, Category } from "../../types";
 import { api } from "../../lib/api";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import { SimpliRideMark } from "../SimpliRideMark";
 
 const CATEGORY_LABELS: Record<Category, string> = {
-  academic: "Academic / Lecturer",
-  finance: "Tuition & Fees",
-  hostel: "Hostel & Facilities",
-  ict: "ICT / Portal Issues",
-  general: "General / Other",
+  trip: "Ride and Booking Issues",
+  payments: "Payments and Fare Issues",
+  safety: "Driver and Rider Conduct",
+  app_account: "App and Technical Issues",
+  general: "General Support and Other Issues",
 };
 
 const CATEGORY_ICONS: Record<Category, ElementType> = {
-  academic: BookOpen,
-  finance: CreditCard,
-  hostel: Building2,
-  ict: Monitor,
+  trip: Car,
+  payments: CreditCard,
+  safety: Shield,
+  app_account: Smartphone,
   general: MessageSquare,
 };
 
@@ -148,7 +148,7 @@ export function ComplaintDetail({
   return (
     <DashboardLayout
       admin={admin}
-      title="Complaint Detail"
+      title="Support Request"
       subtitle={complaint.referenceCode}
       active="complaints"
       onNavigate={(key) => {
@@ -168,7 +168,7 @@ export function ComplaintDetail({
         </button>
         <div className="flex items-center gap-3 flex-1">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
             <div className="font-semibold text-sm">Complaint Detail</div>
@@ -321,10 +321,10 @@ export function ComplaintDetail({
             {/* Admin response */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
               <label className="block font-semibold text-[#1E2233] mb-1">
-                Response to Student
+                Response to Rider
               </label>
               <p className="text-xs text-[#6B7280] mb-3">
-                This response is visible to the student when they track their
+                This response is visible to the rider when they track their
                 complaint.
                 {!complaint.isAnonymous &&
                   complaint.realEmail &&
@@ -336,7 +336,7 @@ export function ComplaintDetail({
                   setResponse(e.target.value);
                   markDirty();
                 }}
-                placeholder="Write your response to the student here. Be clear, professional, and actionable..."
+                placeholder="Write your response to the rider here. Be clear, professional, and actionable..."
                 rows={5}
                 className="w-full px-4 py-3 bg-[#F7F8FA] border border-gray-200 rounded-xl text-[#1E2233] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2B3A67]/20 focus:border-[#2B3A67] resize-none transition-all"
               />
@@ -354,13 +354,13 @@ export function ComplaintDetail({
                   {complaint.messages.map((message, index) => (
                     <div
                       key={`${message.createdAt}-${index}`}
-                      className={`rounded-xl p-4 ${message.sender === "student" ? "bg-[#2B3A67]/6 border border-[#2B3A67]/15" : "bg-[#2E9E6B]/6 border border-[#2E9E6B]/20"}`}
+                      className={`rounded-xl p-4 ${message.sender === "customer" ? "bg-[#2B3A67]/6 border border-[#2B3A67]/15" : "bg-[#2E9E6B]/6 border border-[#2E9E6B]/20"}`}
                     >
                       <div className="flex items-center justify-between gap-3 mb-1">
                         <span className="text-xs font-semibold text-[#1E2233]">
-                          {message.sender === "student"
-                            ? "Student follow-up"
-                            : "Admin response"}
+                          {message.sender === "customer"
+                            ? "Rider follow-up"
+                            : "Support response"}
                         </span>
                         <span className="text-[11px] text-gray-400">
                           {formatDate(message.createdAt)}
@@ -381,7 +381,7 @@ export function ComplaintDetail({
                 Internal Notes
               </label>
               <p className="text-xs text-[#6B7280] mb-3">
-                These notes are for admin use only — never shown to the student.
+                These notes are for admin use only — never shown to the rider.
               </p>
               <textarea
                 value={notes}
@@ -398,7 +398,7 @@ export function ComplaintDetail({
 
           {/* Sidebar */}
           <div className="space-y-4">
-            {/* Student info */}
+            {/* Rider information */}
             <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
               <h3 className="font-semibold text-[#1E2233] text-sm mb-3">
                 Submitted By
@@ -413,12 +413,12 @@ export function ComplaintDetail({
                       {complaint.anonymousLabel}
                     </p>
                     <p className="text-xs text-[#6B7280] mt-0.5">
-                      Student chose to submit anonymously
+                      Rider chose to submit anonymously
                     </p>
                   </div>
                   <div className="bg-purple-50 border border-purple-100 rounded-lg px-3 py-2 text-xs text-purple-600">
-                    Identity is hidden per the student's choice. Do not attempt
-                    to identify this student.
+                    Identity is hidden per the rider's choice. Do not attempt
+                    to identify this rider.
                   </div>
                 </div>
               ) : (
@@ -478,7 +478,7 @@ export function ComplaintDetail({
               </div>
             </div>
 
-            {/* Reassign (super admin only) */}
+            {/* Reassign (operations lead only) */}
             {admin.role === "super" && (
               <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
                 <h3 className="flex items-center gap-1.5 font-semibold text-[#1E2233] text-sm mb-3">
@@ -492,11 +492,11 @@ export function ComplaintDetail({
                   }}
                   className="w-full px-3 py-2.5 bg-[#F7F8FA] border border-gray-200 rounded-xl text-sm text-[#1E2233] focus:outline-none focus:border-[#2B3A67] focus:ring-1 focus:ring-[#2B3A67]/20"
                 >
-                  <option value="academic">Academic / Lecturer</option>
-                  <option value="finance">Tuition & Fees</option>
-                  <option value="hostel">Hostel & Facilities</option>
-                  <option value="ict">ICT / Portal Issues</option>
-                  <option value="general">General / Other</option>
+                  <option value="trip">Ride and Booking Issues</option>
+                  <option value="payments">Payments and Fare Issues</option>
+                  <option value="safety">Driver and Rider Conduct</option>
+                  <option value="app_account">App and Technical Issues</option>
+                  <option value="general">General Support and Other Issues</option>
                 </select>
               </div>
             )}

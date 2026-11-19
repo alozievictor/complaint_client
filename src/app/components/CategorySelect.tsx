@@ -1,42 +1,43 @@
 import type { ElementType } from 'react';
-import { ArrowLeft, BookOpen, CreditCard, Building2, Monitor, MessageSquare, ChevronRight, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Car, CreditCard, Shield, Smartphone, MessageSquare, ChevronRight } from 'lucide-react';
 import type { Category } from '../types';
+import { SimpliRideMark } from './SimpliRideMark';
 
 const CATEGORIES: { id: Category; label: string; description: string; icon: ElementType; adminLabel: string }[] = [
   {
-    id: 'academic',
-    label: 'Academic / Lecturer',
-    description: 'Grade disputes, unfair assessment, lecturer conduct, exam issues, academic misconduct',
-    icon: BookOpen,
-    adminLabel: 'Routed to: Academic Admin',
+    id: 'trip',
+    label: 'Ride and Booking Issues',
+    description: 'Booking issues, route concerns, cancellations, pickup delays, and trip experience',
+    icon: Car,
+    adminLabel: 'Routed to: Ride & Booking Support',
   },
   {
-    id: 'finance',
-    label: 'Tuition & Fees',
-    description: 'Payment errors, duplicate charges, refunds, scholarship issues, fee statement problems',
+    id: 'payments',
+    label: 'Payments and Fare Issues',
+    description: 'Fare disputes, duplicate charges, refunds, payment methods, and receipts',
     icon: CreditCard,
-    adminLabel: 'Routed to: Finance Admin',
+    adminLabel: 'Routed to: Payments & Fare Support',
   },
   {
-    id: 'hostel',
-    label: 'Hostel & Facilities',
-    description: 'Accommodation conditions, water/electricity outages, maintenance, campus infrastructure',
-    icon: Building2,
-    adminLabel: 'Routed to: Hostel Admin',
+    id: 'safety',
+    label: 'Driver and Rider Conduct',
+    description: 'Driver or rider conduct, vehicle safety, lost items, emergencies, or safety concerns',
+    icon: Shield,
+    adminLabel: 'Routed to: Driver & Rider Conduct Support',
   },
   {
-    id: 'ict',
-    label: 'ICT / Portal Issues',
-    description: 'Student portal access, login problems, ICT infrastructure, online tools, systems failures',
-    icon: Monitor,
-    adminLabel: 'Routed to: ICT Admin',
+    id: 'app_account',
+    label: 'App and Technical Issues',
+    description: 'Sign-in issues, account updates, notifications, app performance, and technical errors',
+    icon: Smartphone,
+    adminLabel: 'Routed to: App & Technical Support',
   },
   {
     id: 'general',
-    label: 'General / Other',
-    description: 'Library hours, campus services, canteen, security, or any complaint that doesn\'t fit above',
+    label: 'General Support and Other Issues',
+    description: 'Any other SimpliRide question, feedback, or support request',
     icon: MessageSquare,
-    adminLabel: 'Routed to: Super Admin',
+    adminLabel: 'Routed to: General Support',
   },
 ];
 
@@ -55,11 +56,11 @@ export function CategorySelect({ onSelect, onBack }: Props) {
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Submit a Complaint</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Ride Support</div>
           </div>
         </div>
       </header>
@@ -83,8 +84,8 @@ export function CategorySelect({ onSelect, onBack }: Props) {
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-[#1E2233] mb-2">What is your complaint about?</h2>
-        <p className="text-[#6B7280] mb-8 text-sm">Select the category that best describes your complaint. This routes it to the right department for faster resolution.</p>
+        <h2 className="text-2xl font-bold text-[#1E2233] mb-2">What do you need help with?</h2>
+        <p className="text-[#6B7280] mb-8 text-sm">Select the category that best describes your report. This routes it to the right support team for a faster response.</p>
 
         <div className="space-y-3">
           {CATEGORIES.map(({ id, label, description, icon: Icon, adminLabel }) => (
@@ -107,7 +108,7 @@ export function CategorySelect({ onSelect, onBack }: Props) {
         </div>
 
         <p className="text-xs text-[#6B7280] text-center mt-6">
-          Not sure which category? Pick the closest one — the Super Admin can reassign if needed.
+          Not sure which category? Pick the closest one — the support lead can reassign it if needed.
         </p>
       </div>
     </div>

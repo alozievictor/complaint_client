@@ -1,14 +1,14 @@
-# Lincoln College Online Complaints Management System (LCOCMS)
+# SimpliRide Complaint Management System
 ### Project Requirements Document — Final Year Project
 
 ---
 
 ## 1. Project Overview
 
-**Project Name:** Lincoln College Online Complaints Management System (LCOCMS)
+**Project Name:** SimpliRide Complaint Management System
 
 **Problem Statement:**
-Students at Lincoln College currently have no structured, transparent, or safe channel to raise complaints about academics, lecturers, hostel conditions, tuition/fees, or ICT issues. Manual, verbal, or informal complaint methods lead to slow response times, lost complaints, no accountability, and discourage students from speaking up for fear of consequences.
+SimpliRide riders currently have no structured, transparent, or safe channel to raise complaints. Manual, verbal, or informal complaint methods lead to slow response times, lost complaints, no accountability, and discourage customers from speaking up for fear of consequences.
 
 **Proposed Solution:**
 A web-based complaints management system where students can submit categorized complaints without registering an account, choosing on a per-complaint basis whether to include their name and email or submit anonymously, track the status of their complaint using a unique reference code, and where category-specific college admins can view, manage, and resolve complaints relevant to their department — with a Super Admin overseeing the entire system.
@@ -179,7 +179,7 @@ This gives you a calm indigo/amber institutional palette with clear, distinct st
 
 ## 8. Figma Make Prompt (Ready to Use)
 
-> Design a modern, trustworthy web application called "Lincoln College Online Complaints Management System." It has two sides: a public student-facing flow (no login) where students submit complaints by selecting a category (Academic, Tuition & Fees, Hostel, ICT, General), filling a short form with name and email fields, and a toggle/checkbox to "Submit Anonymously" instead. After submitting, they receive a unique tracking reference code on a confirmation screen. Students can later track their complaint status (Pending, Under Review, Resolved) using that code. The second side is an admin dashboard (role-based login) where category admins view and respond to complaints in a table/list layout — complaints submitted with identity show the student's real name, while complaints submitted anonymously show a generated placeholder like "Anonymous234" instead — and a Super Admin sees all complaints across categories plus analytics (total complaints, resolution rate, complaints by category).
+> Design a modern, trustworthy web application called "SimpliRide Complaint Management System." It has two sides: a public rider-facing flow (no login) where riders submit complaints by selecting a category, filling a short form with name and email fields, and a toggle/checkbox to "Submit Anonymously" instead. After submitting, they receive a unique tracking reference code on a confirmation screen. Riders can later track their complaint status (Pending, Under Review, Resolved) using that code. The second side is an admin dashboard (role-based login) where support administrators view and respond to complaints in a table/list layout — complaints submitted with identity show the rider's real name, while complaints submitted anonymously show a generated placeholder like "Anonymous234" instead — and a Super Admin sees all complaints across categories plus analytics (total complaints, resolution rate, complaints by category).
 >
 > Visual style: calm, official, modern institutional feel — not playful. Use a deep indigo (#2B3A67) as the primary color, warm amber (#F2A93B) as the accent/CTA color, off-white (#F7F8FA) background, and distinct status colors for Pending (gray-blue #8A93A6), Under Review (amber #E9A227), and Resolved (green #2E9E6B). Use Space Grotesk for headings and Inter for body text. Rounded corners, generous whitespace on the student-facing screens, clean data tables on the admin dashboard.
 >

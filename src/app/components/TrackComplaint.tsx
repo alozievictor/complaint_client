@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { ArrowLeft, Search, AlertCircle, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Search, AlertCircle } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 
 interface Props {
   onTrack: (code: string) => Promise<boolean>;
@@ -45,11 +46,11 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Track a Complaint</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Ride Support</div>
           </div>
         </div>
       </header>
@@ -60,7 +61,7 @@ export function TrackComplaint({ onTrack, onBack }: Props) {
             <div className="w-16 h-16 bg-[#2B3A67]/8 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <Search className="w-8 h-8 text-[#2B3A67]" />
             </div>
-            <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Track Your Complaint</h2>
+            <h2 className="text-2xl font-bold text-[#1E2233] mb-2">Track Your Report</h2>
             <p className="text-[#6B7280] text-sm leading-relaxed">
               Enter the private tracking code you received when you submitted your complaint. It looks like <strong>550E8400-E29B-41D4-A716-446655440000</strong>.
             </p>

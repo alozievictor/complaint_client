@@ -4,11 +4,10 @@ import {
   LogOut,
   Search,
   Filter,
-  GraduationCap,
-  BookOpen,
-  Building2,
+  Car,
   CreditCard,
-  Monitor,
+  Shield,
+  Smartphone,
   MessageSquare,
   Clock,
   Eye,
@@ -28,29 +27,31 @@ import type {
   Category,
 } from "../../types";
 import { DashboardLayout } from "../layout/DashboardLayout";
+import { SimpliRideMark } from "../SimpliRideMark";
 
 const CATEGORY_LABELS: Record<string, string> = {
-  academic: "Academic",
-  finance: "Finance",
-  hostel: "Hostel",
-  ict: "ICT",
-  general: "General",
+  trip: "Ride and Booking Issues",
+  payments: "Payments and Fare Issues",
+  safety: "Driver and Rider Conduct",
+  app_account: "App and Technical Issues",
+  general: "General Support and Other Issues",
 };
 
 const CATEGORY_ICONS: Record<string, ElementType> = {
-  academic: BookOpen,
-  finance: CreditCard,
-  hostel: Building2,
-  ict: Monitor,
+  trip: Car,
+  payments: CreditCard,
+  safety: Shield,
+  app_account: Smartphone,
   general: MessageSquare,
 };
 
 const ROLE_LABELS: Record<string, string> = {
-  academic: "Academic Admin",
-  finance: "Finance Admin",
-  hostel: "Hostel Admin",
-  ict: "ICT Admin",
-  super: "Super Admin",
+  trip: "Ride & Booking Support",
+  payments: "Payments & Fare Support",
+  safety: "Driver & Rider Conduct Support",
+  app_account: "App & Technical Support",
+  general: "General Support",
+  super: "Operations Lead",
 };
 
 const STATUS_CONFIG: Record<
@@ -132,11 +133,11 @@ export function AdminDashboard({
   return (
     <DashboardLayout
       admin={admin}
-      title="Complaints Dashboard"
+      title="Ride Support Dashboard"
       subtitle={
         admin.role === "super"
-          ? "All complaints across every department"
-          : `${CATEGORY_LABELS[admin.role]} complaints`
+          ? "All rider reports across every support team"
+          : `${CATEGORY_LABELS[admin.role]} support reports`
       }
       active="complaints"
       onNavigate={(key) => {
@@ -151,10 +152,10 @@ export function AdminDashboard({
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-[#F2A93B] rounded-full flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-[#2B3A67]" />
+              <SimpliRideMark className="w-5 h-5 text-[#2B3A67]" />
             </div>
             <div>
-              <div className="font-bold text-sm">Lincoln College OCMS</div>
+              <div className="font-bold text-sm">SimpliRide Support</div>
               <div className="text-[11px] text-blue-200">
                 {ROLE_LABELS[admin.role]} — {admin.name}
               </div>
@@ -189,7 +190,7 @@ export function AdminDashboard({
           <p className="text-[#6B7280] text-sm">
             {admin.role === "super"
               ? "All complaints across all departments"
-              : `${CATEGORY_LABELS[admin.role]} complaints — ${counts.all} total`}
+              : `${CATEGORY_LABELS[admin.role]} reports — ${counts.all} total`}
           </p>
         </div>*/}
 
@@ -323,11 +324,11 @@ export function AdminDashboard({
                 className="order-2 px-3 py-2 bg-[#F7F8FA] border border-gray-200 rounded-lg text-sm text-[#1E2233]"
               >
                 <option value="">All categories</option>
-                <option value="academic">Academic</option>
-                <option value="finance">Finance</option>
-                <option value="hostel">Hostel</option>
-                <option value="ict">ICT</option>
-                <option value="general">General</option>
+                <option value="trip">Ride and Booking Issues</option>
+                <option value="payments">Payments and Fare Issues</option>
+                <option value="safety">Driver and Rider Conduct</option>
+                <option value="app_account">App and Technical Issues</option>
+                <option value="general">General Support and Other Issues</option>
               </select>
             )}
             <label className="order-4 flex items-center gap-2 text-xs font-medium text-[#6B7280]">
@@ -382,7 +383,7 @@ export function AdminDashboard({
                       Subject
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
-                      Student
+                      Rider
                     </th>
                     <th className="text-left px-4 py-3 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
                       Status

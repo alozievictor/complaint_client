@@ -1,4 +1,5 @@
-import { GraduationCap, Search, Shield, BookOpen, Building2, CreditCard, Monitor, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { Search, Shield, Car, CreditCard, Smartphone, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 
 interface Props {
   onDropComplaint: () => void;
@@ -13,11 +14,11 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
       <header className="bg-[#2B3A67] text-white px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-xs">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#F2A93B] rounded-full flex items-center justify-center flex-shrink-0">
-            <GraduationCap className="w-6 h-6 text-[#2B3A67]" />
+            <SimpliRideMark className="w-6 h-6 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-bold text-base leading-tight">Lincoln College</div>
-            <div className="text-[11px] text-blue-200 leading-tight">Online Complaints Management System</div>
+            <div className="font-bold text-base leading-tight">SimpliRide</div>
+            <div className="text-[11px] text-blue-200 leading-tight">Ride Support & Complaints</div>
           </div>
         </div>
         <button
@@ -36,17 +37,17 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
             <Shield className="w-3.5 h-3.5" /> Safe · Transparent · Accountable
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 leading-tight">
-            Your Voice, <span className="text-[#F2A93B]">Heard</span> & Resolved
+           Your Voice, <span className="text-[#F2A93B]">Heard</span> & Resolved
           </h1>
           <p className="text-blue-200 text-lg max-w-xl mx-auto mb-10">
-            Submit complaints safely and track their resolution — no account or registration needed.
+            Report a ride issue, follow its progress, and get the support you need — no account required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={onDropComplaint}
               className="bg-[#F2A93B] text-[#1E2233] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#e09830] transition-all flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl hover:-translate-y-0.5"
             >
-              <MessageSquare className="w-5 h-5" /> Drop a Complaint
+              <MessageSquare className="w-5 h-5" /> Report a Complaint
             </button>
             <button
               onClick={onTrackComplaint}
@@ -60,26 +61,26 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
 
       {/* How it works */}
       <section className="px-6 py-16 max-w-4xl mx-auto w-full">
-        <h2 className="text-2xl font-bold text-[#1E2233] text-center mb-2">How It Works</h2>
-        <p className="text-[#6B7280] text-center mb-10">Three simple steps from submission to resolution</p>
+        <h2 className="text-2xl font-bold text-[#1E2233] text-center mb-2">How Support Works</h2>
+        <p className="text-[#6B7280] text-center mb-10">Three simple steps from reporting an issue to receiving an update</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
               step: '01',
-              title: 'Submit',
-              desc: 'Fill a short form, select a category. Choose to include your name or submit anonymously — your decision, per complaint.',
+              title: 'Report',
+              desc: 'Tell us what happened and choose the right category. You can include your name or report anonymously.',
               icon: MessageSquare,
             },
             {
               step: '02',
               title: 'Track',
-              desc: 'Receive a private tracking code that you can use anytime to check your complaint status.',
+              desc: 'Use your private reference code anytime to check the status of your support request.',
               icon: Search,
             },
             {
               step: '03',
               title: 'Resolve',
-              desc: 'The right department reviews your complaint and responds. You see their resolution note as soon as it is posted.',
+              desc: 'Our support team reviews your report and shares an update as soon as one is available.',
               icon: CheckCircle2,
             },
           ].map(({ step, title, desc, icon: Icon }) => (
@@ -100,15 +101,15 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
       {/* Categories */}
       <section className="bg-white px-6 py-14">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#1E2233] text-center mb-2">Complaint Categories</h2>
-          <p className="text-[#6B7280] text-center mb-8">Your complaint is routed to the specialist department for faster resolution</p>
+          <h2 className="text-2xl font-bold text-[#1E2233] text-center mb-2">Choose a Support Category</h2>
+          <p className="text-[#6B7280] text-center mb-8">Your report is sent to the right support team for a faster response</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {[
-              { label: 'Academic', sub: 'Grades, lecturers', icon: BookOpen },
-              { label: 'Tuition & Fees', sub: 'Billing, payments', icon: CreditCard },
-              { label: 'Hostel & Facilities', sub: 'Accommodation', icon: Building2 },
-              { label: 'ICT / Portal', sub: 'Systems, access', icon: Monitor },
-              { label: 'General', sub: 'Other issues', icon: MessageSquare },
+              { label: 'Ride and Booking Issues', sub: 'Routes, pickups', icon: Car },
+              { label: 'Payments and Fare Issues', sub: 'Billing, refunds', icon: CreditCard },
+              { label: 'Driver and Rider Conduct', sub: 'Conduct, safety', icon: Shield },
+              { label: 'App and Technical Issues', sub: 'Access, errors', icon: Smartphone },
+              { label: 'General Support and Other Issues', sub: 'Other requests', icon: MessageSquare },
             ].map(({ label, sub, icon: Icon }) => (
               <button
                 key={label}
@@ -135,7 +136,7 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
             <div className="w-14 h-14 bg-[#2B3A67]/8 rounded-full flex items-center justify-center mx-auto mb-4">
               <Shield className="w-7 h-7 text-[#2B3A67]" />
             </div>
-            <h3 className="font-bold text-[#1E2233] text-xl mb-3">Your Privacy is Protected</h3>
+            <h3 className="font-bold text-[#1E2233] text-xl mb-3">Your Privacy, Your Choice</h3>
             <p className="text-[#6B7280] leading-relaxed">
               You decide, <strong>per complaint</strong>, whether to identify yourself or submit anonymously. Anonymous submissions show only a generated placeholder — like <strong>Anonymous234</strong> — to the reviewing admin. Your real identity is never revealed without your consent.
             </p>
@@ -147,9 +148,9 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
       <section className="bg-[#2B3A67] px-6 py-10">
         <div className="max-w-3xl mx-auto grid grid-cols-3 gap-6 text-center text-white">
           {[
-            { value: '8', label: 'Complaints Submitted' },
+            { value: '8', label: 'Reports Submitted' },
             { value: '3', label: 'Resolved This Month' },
-            { value: '5', label: 'Categories Covered' },
+            { value: '5', label: 'Support Categories' },
           ].map(({ value, label }) => (
             <div key={label}>
               <div className="text-3xl font-bold text-[#F2A93B]">{value}</div>
@@ -161,8 +162,8 @@ export function LandingPage({ onDropComplaint, onTrackComplaint, onAdminLogin }:
 
       {/* Footer */}
       <footer className="bg-[#1E2233] text-white/50 px-6 py-6 text-center text-sm mt-auto">
-        <p>© 2026 Lincoln College · Online Complaints Management System</p>
-        <p className="mt-1 text-white/30 text-xs">A Final Year Project — Built for transparency and student welfare</p>
+        <p>© 2026 SimpliRide</p>
+        <p className="mt-1 text-white/30 text-xs">Safe, transparent support for every journey</p>
       </footer>
     </div>
   );

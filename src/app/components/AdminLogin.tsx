@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
-import { ArrowLeft, Eye, EyeOff, Shield, AlertCircle, GraduationCap } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { SimpliRideMark } from './SimpliRideMark';
 
 interface Props {
   onLogin: (username: string, password: string) => Promise<boolean>;
@@ -42,11 +43,11 @@ export function AdminLogin({ onLogin, onBack }: Props) {
         </button>
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#F2A93B] rounded-full flex items-center justify-center">
-            <GraduationCap className="w-4 h-4 text-[#2B3A67]" />
+            <SimpliRideMark className="w-4 h-4 text-[#2B3A67]" />
           </div>
           <div>
-            <div className="font-semibold text-sm">Lincoln College OCMS</div>
-            <div className="text-[11px] text-blue-200">Staff Portal</div>
+            <div className="font-semibold text-sm">SimpliRide</div>
+            <div className="text-[11px] text-blue-200">Support Operations</div>
           </div>
         </div>
       </header>
@@ -56,10 +57,10 @@ export function AdminLogin({ onLogin, onBack }: Props) {
           {/* Logo card */}
           <div className="bg-[#2B3A67] rounded-2xl p-8 text-center text-white mb-6 shadow-xl">
             <div className="w-16 h-16 bg-[#F2A93B] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Shield className="w-8 h-8 text-[#2B3A67]" />
+              <SimpliRideMark className="w-8 h-8 text-[#2B3A67]" />
             </div>
-            <h2 className="text-xl font-bold mb-1">Admin Portal</h2>
-            <p className="text-blue-200 text-sm">Lincoln College OCMS — Staff Login</p>
+            <h2 className="text-xl font-bold mb-1">Support Portal</h2>
+            <p className="text-blue-200 text-sm">Sign in to manage rider support reports</p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
