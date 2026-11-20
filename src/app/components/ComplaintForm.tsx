@@ -37,11 +37,9 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
     else if (description.trim().length < 20) e.description = 'Please provide at least 20 characters of detail';
     if (!isAnonymous) {
       if (!name.trim()) e.name = 'Your name is required';
-      if (!email.trim()) e.email = 'Your email is required';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'Please enter a valid email address';
+      if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'Please enter a valid email address';
     } else {
-      if (!notifEmail.trim()) e.notifEmail = 'Your email is required so we can send your private tracking code';
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(notifEmail)) e.notifEmail = 'Please enter a valid email address';
+      if (notifEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(notifEmail)) e.notifEmail = 'Please enter a valid email address';
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -247,7 +245,7 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-[#1E2233] mb-1.5">
-                      Email Address <span className="text-[#D0564A]">*</span>
+                      Email Address <span className="text-[#6B7280] font-normal text-xs">(Optional)</span>
                     </label>
                     <input
                       type="email"
@@ -270,7 +268,7 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
               <div className="border-t border-gray-100 p-5 bg-[#F7F8FA]/70">
                 <label className="block text-sm font-medium text-[#1E2233] mb-1">
                   <Mail className="w-3.5 h-3.5 inline mr-1" />
-                  Notification Email <span className="text-[#D0564A]">*</span>
+                  Notification Email <span className="text-[#6B7280] font-normal text-xs">(Optional)</span>
                 </label>
                 <input
                   type="email"
@@ -283,7 +281,7 @@ export function ComplaintForm({ category, onSubmit, onBack }: Props) {
                   <p className="mt-1 text-[#D0564A] text-xs">{errors.notifEmail}</p>
                 )}
                 <p className="mt-1.5 text-xs text-[#6B7280]">
-                  Used only to email you your private tracking code and status updates. This email is <strong>never</strong> shown to the admin.
+                  Used only for private tracking updates if you choose to provide it. It is <strong>never</strong> shown to the admin.
                 </p>
               </div>
             )}
